@@ -38,7 +38,7 @@ jobs:
           tofu_version: latest
 
       - name: Deploy Web Stack
-        if: !${{ inputs.destroy }}
+        if: ${{ ! inputs.destroy }}
         working-directory: web_stack
         run: |
           tofu init
