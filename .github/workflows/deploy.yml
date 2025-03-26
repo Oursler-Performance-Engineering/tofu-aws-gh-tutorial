@@ -1,0 +1,52 @@
+name: Deploy AWS Infrastructure
+
+on:
+  push:
+    branches:
+      - main
+
+  # Optional: Allow manual triggering of the workflow
+  workflow_dispatch:
+    inputs:
+      destroy:
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  id-token: write  # Required for OIDC authentication
+  contents: read   # Required to checkout the repository
+
+jobs:
+  plan:
+    name: Run OpenTofu Plan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Configure AWS Credentials via OIDC
+        uses: aws-actions/configure-aws-credentials@ececac1a45f3b08a01d2dd070d28d111c5fe6722 # v4.1.0
+        with:
+          role-to-assume: ${{ secrets.READ_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Install OpenTofu
+        uses: opentofu/setup-opentofu@592200bd4b9bbf4772ace78f887668b1aee8f716 # v1.0.5
+        with:
+          tofu_version: latest
+
+      - name: Deploy Web Stack
+        if: !${{ inputs.destroy }}
+        working-directory: web_stack
+        run: |
+          tofu init
+          tofu apply -auto-approve
+
+      - name: Destroy Web Stack
+        if: ${{ inputs.destroy }}
+        working-directory: web_stack
+        run: |
+          tofu init
+          tofu destroy -auto-approve
