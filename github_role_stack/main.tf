@@ -30,6 +30,8 @@ data "aws_iam_policy_document" "backend_policy" {
     actions = [
       "s3:ListBucket"
     ]
+    # This could be further scoped down with a predermined bucket name
+    # for the web stack's backend we'll create later.
     resources = ["*"]
   }
 
@@ -73,6 +75,9 @@ module "iam_github_write_role" {
   subjects = ["justin-o12/tofu-gh-example:ref:refs/heads/main"]
 
   policies = {
+    AmazonDynamoDBFullAccess = "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
+    AmazonEC2FullAccess = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
+    AmazonS3FullAccess = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
     AmazonVPCFullAccess = "arn:aws:iam::aws:policy/AmazonVPCFullAccess"
     tf-backend-policy = aws_iam_policy.backend_policy.arn
   }
