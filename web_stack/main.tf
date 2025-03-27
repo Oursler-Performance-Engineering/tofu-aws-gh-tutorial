@@ -44,12 +44,12 @@ resource "aws_security_group" "web_sg" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  ingress {
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  #ingress {
+  #  from_port   = 22
+  #  to_port     = 22
+  #  protocol    = "tcp"
+  #  cidr_blocks = ["0.0.0.0/0"]
+  #}
 
   ingress {
     from_port   = -1
@@ -75,7 +75,7 @@ resource "aws_instance" "web" {
   user_data = <<-EOF
               #!/bin/bash
               yum update -y
-              yum install -y nginx
+              amazon-linux-extras install -y nginx1
               systemctl start nginx
               systemctl enable nginx
               EOF
