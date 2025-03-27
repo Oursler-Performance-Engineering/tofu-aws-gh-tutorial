@@ -3,8 +3,8 @@
 # be bootstrapped according to the simple yet essential procedure in
 # https://github.com/cloudposse/terraform-aws-tfstate-backend#usage
 module "terraform_state_backend" {
-  source      = "cloudposse/tfstate-backend/aws"
-  version     = "v1.5.0"
+  source  = "cloudposse/tfstate-backend/aws"
+  version = "v1.5.0"
 
   namespace  = "example"
   stage      = "dev"
@@ -19,8 +19,8 @@ module "terraform_state_backend" {
 module "iam_github_oidc_provider" {
   count = 0
 
-  source    = "terraform-aws-modules/iam/aws//modules/iam-github-oidc-provider"
-  version   = "v5.54.0"
+  source  = "terraform-aws-modules/iam/aws//modules/iam-github-oidc-provider"
+  version = "v5.54.0"
 }
 
 # These permissions are documented here https://opentofu.org/docs/language/settings/backends/s3/
@@ -67,8 +67,8 @@ resource "aws_iam_policy" "backend_policy" {
 }
 
 module "iam_github_write_role" {
-  source    = "terraform-aws-modules/iam/aws//modules/iam-github-oidc-role"
-  version   = "v5.54.0"
+  source  = "terraform-aws-modules/iam/aws//modules/iam-github-oidc-role"
+  version = "v5.54.0"
 
   name = "github-write-role"
 
@@ -76,23 +76,23 @@ module "iam_github_write_role" {
 
   policies = {
     AmazonDynamoDBFullAccess = "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
-    AmazonEC2FullAccess = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
-    AmazonS3FullAccess = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
-    AmazonVPCFullAccess = "arn:aws:iam::aws:policy/AmazonVPCFullAccess"
-    tf-backend-policy = aws_iam_policy.backend_policy.arn
+    AmazonEC2FullAccess      = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
+    AmazonS3FullAccess       = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
+    AmazonVPCFullAccess      = "arn:aws:iam::aws:policy/AmazonVPCFullAccess"
+    tf-backend-policy        = aws_iam_policy.backend_policy.arn
   }
 }
 
 module "iam_github_read_role" {
-  source    = "terraform-aws-modules/iam/aws//modules/iam-github-oidc-role"
-  version   = "v5.54.0"
+  source  = "terraform-aws-modules/iam/aws//modules/iam-github-oidc-role"
+  version = "v5.54.0"
 
   name = "github-read-role"
 
   subjects = ["justin-o12/tofu-gh-example:*"]
 
   policies = {
-    ReadOnlyAccess = "arn:aws:iam::aws:policy/ReadOnlyAccess"
+    ReadOnlyAccess    = "arn:aws:iam::aws:policy/ReadOnlyAccess"
     tf-backend-policy = aws_iam_policy.backend_policy.arn
   }
 }

@@ -8,10 +8,10 @@ data "aws_availability_zones" "available" {
 # This will resolved to the latest AMI of 64-bit Amazon Linux 2.
 data "aws_ami" "web_ami" {
   most_recent = true
-  owners = ["amazon"]
+  owners      = ["amazon"]
 
   filter {
-    name = "name"
+    name   = "name"
     values = ["amzn2-ami-hvm-*-x86_64-gp2"]
   }
 }
@@ -30,7 +30,7 @@ module "vpc" {
   name = "web-vpc"
   cidr = var.cidr
 
-  azs = local.azs
+  azs            = local.azs
   public_subnets = [for k, v in module.vpc.azs : cidrsubnet(module.vpc.vpc_cidr_block, 5, k)]
 
   enable_nat_gateway = true
@@ -57,7 +57,7 @@ resource "aws_security_group" "web_sg" {
 resource "aws_instance" "web" {
   ami                    = data.aws_ami.web_ami.image_id
   instance_type          = "t2.micro"
-  subnet_id             = module.vpc.public_subnets[0]
+  subnet_id              = module.vpc.public_subnets[0]
   vpc_security_group_ids = [aws_security_group.web_sg.id]
 
   user_data = <<-EOF
@@ -78,8 +78,8 @@ resource "aws_instance" "web" {
 # be bootstrapped according to the simple yet essential procedure in
 # https://github.com/cloudposse/terraform-aws-tfstate-backend#usage
 module "terraform_state_backend" {
-  source      = "cloudposse/tfstate-backend/aws"
-  version     = "v1.5.0"
+  source  = "cloudposse/tfstate-backend/aws"
+  version = "v1.5.0"
 
   namespace  = "example"
   stage      = "dev"
