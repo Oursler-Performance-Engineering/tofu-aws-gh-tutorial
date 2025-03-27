@@ -32,8 +32,6 @@ module "vpc" {
 
   azs            = local.azs
   public_subnets = [for k, v in module.vpc.azs : cidrsubnet(module.vpc.vpc_cidr_block, 5, k)]
-
-  enable_nat_gateway = true
 }
 
 resource "aws_security_group" "web_sg" {
@@ -71,6 +69,10 @@ resource "aws_instance" "web" {
   tags = {
     Name = "WebServer"
   }
+}
+
+resource "aws_eip" "web_eip" {
+  instance = aws_instance.web.id
 }
 
 # You cannot create a new backend by simply defining this and then

@@ -1,3 +1,3 @@
-output "nat_public_ips" {
-  value = module.vpc.nat_public_ips
+output "web_eip" {
+  value = aws_eip.web_eip.public_ip
 }
