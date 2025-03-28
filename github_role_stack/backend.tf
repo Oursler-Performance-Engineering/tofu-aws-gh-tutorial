@@ -1,13 +1,11 @@
 terraform {
-  required_version = ">= 1.0.0"
-
   backend "s3" {
     region  = "us-east-2"
-    bucket  = "example-dev-github-role-stack-state"
-    key     = "terraform.tfstate"
+    bucket  = "example-dev-oursler-backend-state"
+    key     = "github_role_stack.tfstate"
     profile = ""
     encrypt = "true"
 
-    dynamodb_table = "example-dev-github-role-stack-state-lock"
+    dynamodb_table = "example-dev-oursler-backend-state-lock"
   }
 }
