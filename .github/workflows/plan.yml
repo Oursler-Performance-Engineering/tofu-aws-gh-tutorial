@@ -33,4 +33,4 @@ jobs:
         working-directory: web_stack
         run: |
           tofu init
-          tofu plan
+          tofu plan -destroy
