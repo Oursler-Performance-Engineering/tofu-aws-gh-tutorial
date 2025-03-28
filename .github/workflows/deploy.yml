@@ -5,14 +5,6 @@ on:
     branches:
       - main
 
-  # Optional: Allow manual triggering of the workflow
-  workflow_dispatch:
-    inputs:
-      destroy:
-        required: true
-        default: false
-        type: boolean
-
 permissions:
   id-token: write  # Required for OIDC authentication
   contents: read   # Required to checkout the repository
@@ -38,15 +30,7 @@ jobs:
           tofu_version: latest
 
       - name: Deploy Web Stack
-        if: false #${{ ! inputs.destroy }}
         working-directory: web_stack
         run: |
           tofu init
           tofu apply -auto-approve
-
-      - name: Destroy Web Stack
-        if: false #${{ inputs.destroy }}
-        working-directory: web_stack
-        run: |
-          tofu init
-          tofu destroy -auto-approve
