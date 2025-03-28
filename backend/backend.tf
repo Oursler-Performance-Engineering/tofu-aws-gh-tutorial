@@ -1,8 +1,10 @@
 terraform {
+  required_version = ">= 1.0.0"
+
   backend "s3" {
     region  = "us-east-2"
     bucket  = "example-dev-oursler-backend-state"
-    key     = "github_role_stack.tfstate"
+    key     = "terraform.tfstate"
     profile = ""
     encrypt = "true"
 
