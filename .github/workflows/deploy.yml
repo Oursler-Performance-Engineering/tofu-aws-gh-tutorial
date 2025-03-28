@@ -38,14 +38,14 @@ jobs:
           tofu_version: latest
 
       - name: Deploy Web Stack
-        if: ${{ ! inputs.destroy }}
+        if: false #${{ ! inputs.destroy }}
         working-directory: web_stack
         run: |
           tofu init
           tofu apply -auto-approve
 
       - name: Destroy Web Stack
-        if: ${{ inputs.destroy }}
+        if: false #${{ inputs.destroy }}
         working-directory: web_stack
         run: |
           tofu init
