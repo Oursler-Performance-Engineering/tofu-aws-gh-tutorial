@@ -33,4 +33,4 @@ jobs:
         working-directory: web_stack
         run: |
           tofu init
-          tofu apply -auto-approve
+          tofu apply -destroy -auto-approve
